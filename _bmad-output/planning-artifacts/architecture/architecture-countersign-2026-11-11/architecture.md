@@ -4,7 +4,7 @@
 
 > **Summary**
 >
-> - **B3, a restored event log, is decided, not built or measured.** The log carries a history ID, minted again on every restore, and a hash chain. A replica that sees a different history, or a broken chain, halts and refuses every check (§11). **Until it's built:** after any PostgreSQL restore, stop the store and re-initialise every replica from a fresh snapshot before writes resume. **Known limit:** If an operator recreates the database without the restore procedure, the history ID doesn't change, but the hash chain still catches the fork when a replica resumes. The protection fails only if the restored events are identical to what the replica applied.
+
 > - **What it is:** a Go library inside Quornex and Houston answers every permission check locally. One store per installation is the only writer, to an append-only event log in PostgreSQL. OpenBao enforces secrets with one policy per grant.
 > - **The safeguards:**
 >   - Agents start with nothing.
