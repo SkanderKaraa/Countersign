@@ -1,0 +1,32 @@
+# Structure review: PRD addendum
+
+**Reviewed:** `addendum.md` (414 words: preamble 10, intro 13, Danny's answer 146, Decision-table seeds 230)
+**Lens:** structure · **Reader:** humans · **Style guide:** Microsoft Writing Style Guide (British spelling and no serial comma are deliberate, so they aren't flagged)
+
+**Purpose read:** this document exists to give the architect (and anyone checking the PRD's sources) two things the PRD leaves out: the provenance of the 2026-11-11 client decisions the PRD cites as "(Danny, 2026-11-11)", and a starter set of decision-table cases tied to FRs.
+
+**Structure model:** Reference/Database is the closest fit. The document has two independent blocks that readers jump into from PRD cross-references, rather than read as a narrative. The rules that apply are consistent schema per item, MECE grouping and random access. The Pyramid rule of putting the most critical item first also applies lightly.
+
+Overall the shape is sound and short. Both sections serve the stated purpose, nothing is truly redundant, and nothing belongs in another document. Most findings are about missing scaffolding: references the reader has to resolve elsewhere, and one name collision.
+
+| Pass | Original Text | Revised Text | Changes |
+| --- | --- | --- | --- |
+| structure | Seed 2, Expected: "depends on Danny's answer" | QUESTION: point to the specific open question, for example "open: PRD §9 question N (self-approval of own agent)" | The section directly above is titled "Danny's answer", so readers will look there for the answer, and it doesn't settle this case. The phrase reads as if it refers back to that section. Naming the open question removes the collision (+~5 words) |
+| structure | §Decision-table seeds, intro: "**Attack** marks a case suited to the five attacks." | QUESTION: anchor "the five attacks" to its source (PRD §8 SM-8) and say whether the five marked seeds *are* the five attacks | "The five attacks" isn't defined in the addendum. Five seeds are marked (1, 3, 4, 7, 8), which suggests they are the full set, but "suited to" leaves that unclear. One clause fixes it (+~6 words) |
+| structure | §Decision-table seeds, intro: "Each one should become a row in the decision table" | QUESTION: state the coverage, for example "8 of the 25 cases; the architecture supplies the rest" | The heading promises a 25-case table, but the reader has to count to find there are 8 seeds, and isn't told who owns the other 17. One sentence of scaffolding sets expectations (+~10 words) |
+| structure | Seeds table, Case column: "**Attack:**" prefix inside the case text | MOVE: into its own narrow column (for example "Attack" with ✓ or blank), and drop the prefix from the case text | The marker is mixed into the case description, so scanning for attacks means reading every row. A separate column makes the table's schema consistent and makes the five attacks visible at a glance (~−5 words in cells) |
+| structure | Seed 3, Expected: "the check is refused, and the request returns "ask" (people only). Assumes the gate exists." | MOVE: put "Assumes the gate exists" in a Notes column, or a footnote that cites PRD §7.1 and §9 question 6b. Keep only the outcome in Expected | Expected is the only cell holding a precondition, which breaks the column's schema. The assumption is critical (the case fails without the gate), so it deserves its own visible place rather than trailing the outcome (net ~0 words) |
+| structure | Seed 8 (FR-14), placed last | MOVE: put it next to seed 4 (also FR-14, also a handing-down attack), and renumber | All the other seeds are in FR order. Seed 8 looks like an afterthought and splits the two FR-14 sharing attacks apart. Seed numbers aren't cited anywhere else in the PRD (only in `.memlog.md`), so renumbering is safe (0 words) |
+| structure | §Danny's answer, heading | QUESTION: add which questions the email answers (for example "answers PRD §9 questions 1–4") as a line under the heading, or as a ref on each bullet | The PRD cites "Danny, 2026-11-11" in several FRs. Mapping each bullet to the question it closes would let an architect trace from addendum to PRD in both directions. The PRD also says "answers" (plural) while this heading says "answer" (+~8 words) |
+| structure | §Danny's answer, bullet schema: Identity and Service grants are flat, while Administrators and Sharing are nested | CONDENSE (optional): pick one shape. Either nest every topic, or flatten the three Administrators sub-points into one line | This is a minor inconsistency in a reference block. The nesting suggests Administrators and Sharing carry more weight, which may not be intended (~0 to −5 words) |
+| structure | Intro: "Material for the architecture, or context that doesn't fit in the PRD itself." | CONDENSE: name the two parts, for example "The client's 2026-11-11 email (paraphrased) and decision-table seeds for the architecture." | The current line is generic and could describe any addendum. Naming the contents front-loads them for the reader (≈ same length) |
+| structure | Preamble, then H1 "Addendum" duplicating the frontmatter title | PRESERVE (or optional CUT of the H1 if the renderer shows the title) | This is harmless. Keep it if the file is read raw, where the frontmatter isn't shown as a heading |
+| structure | Line 13: "This is paraphrased, not quoted. Ask Danny before publishing the email itself." | PRESERVE | It reads like housekeeping, but it is a critical constraint and is correctly placed first in the section, before anyone quotes from it |
+| structure | Section order: the email comes before the seeds | PRESERVE | Under Pyramid ordering the seeds are the more actionable block for the architect. But the email is the source the PRD cites, and seed 2 depends on it, so putting provenance first reads naturally and keeps the two blocks MECE |
+
+## Summary
+
+- **Recommendations:** 12 (4 QUESTION, 3 MOVE, 2 CONDENSE, 3 PRESERVE, counting the H1 row as PRESERVE).
+- **Estimated word impact if all are accepted:** roughly +20 to +25 words net (about +5 to 6% of 414). These are additions of scaffolding, not cuts. The document is already lean, and the gains come from resolving references, not from reducing length.
+- **Length target:** none was given.
+- **Comprehension trade-offs:** none. No recommendation removes a visual aid, example or orientation element. The table-column changes make the page easier to scan.

@@ -1,0 +1,77 @@
+// Countersign's Cedar schema: the shapes policies.cedar is checked against,
+// and what SymCC analyses. cedar-go doesn't validate against it at runtime;
+// the Go layer and its guard build the entities.
+//
+// Times are Long values in Unix milliseconds. A Path's parents are every
+// wider subtree, so "covers" is Cedar's `in`.
+
+entity Person;
+entity Agent;
+entity Path in [Path];
+
+// A pending request, as an approval sees it.
+entity Request = {
+  requester: Person,
+  target: Path,
+  class: String,
+};
+
+// One grant in a chain, with the facts the layer computed from the log.
+entity Grant = {
+  principal: Agent,
+  action: Action,
+  scope: Path,
+  ends_at: Long,
+  withdrawn: Bool,
+  task_closed: Bool,
+  agent_ended: Bool,
+  parent?: Grant,
+  depth: Long,
+  kind: String,
+};
+
+// Checks: one candidate grant's chain against one resource.
+action "read", "push", "deploy", "merge", "delete", "pay" appliesTo {
+  principal: [Agent, Person],
+  resource: [Path],
+  context: { now: Long, grant: Grant },
+};
+
+action "approve" appliesTo {
+  principal: [Person, Agent],
+  resource: [Request],
+  context: { approver_is_admin: Bool, authority_scopes: Set<Path> },
+};
+
+action "hand_down" appliesTo {
+  principal: [Agent, Person],
+  resource: [Grant],
+  context: {
+    child_scope: Path,
+    child_ends_at: Long,
+    child_depth: Long,
+    class: String,
+    has_sharing_limit: Bool,
+    sharing_limit: Long,
+    chain_len: Long,
+    max_depth: Long,
+  },
+};
+
+action "set_marking" appliesTo {
+  principal: [Person, Agent],
+  resource: [Path],
+  context: { set_by_is_admin: Bool, class: String, is_floor: Bool },
+};
+
+action "create_service_grant" appliesTo {
+  principal: [Person, Agent],
+  resource: [Path],
+  context: {
+    creator_is_admin: Bool,
+    creator_authorised: Bool,
+    creator_holds: Bool,
+    owner: String,
+    owner_is_creator: Bool,
+  },
+};
