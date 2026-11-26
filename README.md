@@ -4,8 +4,6 @@ Countersign is a design for one permission engine for people and AI agents acros
 
 This repository is Skander's answer to the Orvex AI intern design brief. It holds a product brief, a PRD, an architecture with diagrams, a two-engine spike with measurements and formal proofs, and a log of how AI was used.
 
-> **B3, a restored event log, is decided but not built.** The design detects a restored log with a history ID and a hash chain, and halts every replica that sees one. **Until it's built:** after any PostgreSQL restore, stop the store and re-initialise every replica from a fresh snapshot before writes resume. **Known limit:** If an operator recreates the database without the restore procedure, the history ID doesn't change, but the hash chain still catches the fork when a replica resumes. The protection fails only if the restored events are identical to what the replica applied. See [Open questions](#open-questions).
-
 ## The hand-in
 
 | Asked for | Where |
