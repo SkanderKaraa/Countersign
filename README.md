@@ -1,4 +1,4 @@
-# Countersign
+# Countersign V1
 
 Countersign is a design for one permission engine for people and AI agents across Orvex's Quornex and Houston. It decides who may do what, where, and for how long, and it explains and records every decision. Agents start with nothing. Contained actions are approved by rules, and production, real secrets, money and deletion always wait for a person.
 
